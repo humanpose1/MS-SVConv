@@ -130,13 +130,11 @@ You can find all the pretrained model  (More will be added in the future)
 ## citation
 If you like our work, please cite it :
 ```
-@misc{horache2021mssvconv,
+@inproceedings{horache2021mssvconv,
       title={3D Point Cloud Registration with Multi-Scale Architecture and Self-supervised Fine-tuning},
       author={Sofiane Horache and Jean-Emmanuel Deschaud and François Goulette},
       year={2021},
-      eprint={2103.14533},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+      journal={arXiv preprint arXiv:2103.14533}
 }
 ```
 
