@@ -55,16 +55,16 @@ poetry run python train.py task=registration model_type=ms_svconv_base model_nam
 automatically, the code will call the right yaml file in `conf/data/registration` for the dataset and `conf/model/registration` for the model.
 If you just want to train MS-SVConv with 1 head, run this command
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_1head dataset=fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True training.epochs=200 eval_frequency=10
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_1head data=registration/fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True epochs=200 eval_frequency=10
 ```
 You can modify some hyperparameters directly on the command line. For example, if you want to change the learning rate of `1e-2`, you can run:
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_1head dataset=fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True training.epochs=200 eval_frequency=10 training.optim.base_lr=1e-2
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_1head data=registration/fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True epochs=200 eval_frequency=10 optim.base_lr=1e-2
 ```
 
 To resume training:
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head dataset=fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True training.epochs=200 eval_frequency=10 training.checkpoint_dir=/path/of/directory/containing/pretrained/model
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/fragment3dmatch training=sparse_fragment_reg tracker_options.make_submission=True epochs=200 eval_frequency=10 checkpoint_dir=/path/of/directory/containing/pretrained/model
 ```
 
 
@@ -75,16 +75,16 @@ For 3DMatch, it was supervised training because the pose is necessary. But we ca
 
 To train on Modelnet run this command:
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head dataset=modelnet_sparse_ss training=sparse_fragment_reg tracker_options.make_submission=True training.epochs=200 eval_frequency=10
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/modelnet_sparse_ss training=sparse_fragment_reg tracker_options.make_submission=True epochs=200 eval_frequency=10
 ```
 
 To fine-tune on ETH run this command (First, download the pretrained model from 3DMatch [here](https://cloud.mines-paristech.fr/index.php/s/hRc6y2YIFtYsGAI/)):
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head dataset=eth_base training=sparse_fragment_reg_finetune tracker_options.make_submission=True training.epochs=200 eval_frequency=10 models.path_pretrained=/path/to/your/pretrained/model.pt
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head data=registration/eth_base training=sparse_fragment_reg_finetune tracker_options.make_submission=True epochs=200 eval_frequency=10 models.path_pretrained=/path/to/your/pretrained/model.pt
 ```
 To fine-tune on TUM, run this command:
 ```
-poetry run python train.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head dataset=testtum_ss training=sparse_fragment_reg_finetune tracker_options.make_submission=True training.epochs=200 eval_frequency=10 models.path_pretrained=/path/to/your/pretrained/model.pt
+poetry run python train.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head data=registration/testtum_ss training=sparse_fragment_reg_finetune tracker_options.make_submission=True epochs=200 eval_frequency=10 models.path_pretrained=/path/to/your/pretrained/model.pt
 ```
 
 
@@ -94,11 +94,11 @@ For all these command, it will save in `outputs` directory log of the training, 
 
 You can also train MS-SVConv on scannet for semantic segmentation. To do this simply run:
 ```
-poetry run python train.py task=segmentation model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head lr_scheduler.params.gamma=0.9922 dataset=scannet-sparse training=minkowski_scannet tracker_options.make_submission=False tracker_options.full_res=False data.process_workers=1 wandb.log=True eval_frequency=10 training.batch_size=4
+poetry run python train.py task=segmentation models=segmentation/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head lr_scheduler.params.gamma=0.9922 data=segmentation/scannet-sparse training=minkowski_scannet tracker_options.make_submission=False tracker_options.full_res=False data.process_workers=1 wandb.log=True eval_frequency=10 batch_size=4
 ```
 And you can easily transfer from registration to segmantation, with this command:
 ```
-poetry run python train.py task=segmentation model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head lr_scheduler.params.gamma=0.9922 dataset=scannet-sparse training=minkowski_scannet tracker_options.make_submission=False tracker_options.full_res=False data.process_workers=1 wandb.log=True eval_frequency=10 training.batch_size=4 models.path_pretrained=/path/to/your/pretrained/model.pt
+poetry run python train.py task=segmentation models=segmentation/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head lr_scheduler.params.gamma=0.9922 data=segmentation/scannet-sparse training=minkowski_scannet tracker_options.make_submission=False tracker_options.full_res=False data.process_workers=1 wandb.log=True eval_frequency=10 batch_size=4 models.path_pretrained=/path/to/your/pretrained/model.pt
 ```
 
 ## Evaluation
@@ -106,19 +106,19 @@ poetry run python train.py task=segmentation model_type=ms_svconv_base model_nam
 If you want to evaluate the models on 3DMatch,  download the model [here](https://cloud.mines-paristech.fr/index.php/s/hRc6y2YIFtYsGAI) and run:
 
 ```
-poetry run python scripts/test_registration_scripts/evaluate.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head dataset=fragment3dmatch training=sparse_fragment_reg training.cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/
+poetry run python scripts/test_registration_scripts/evaluate.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/fragment3dmatch training=sparse_fragment_reg cuda=True data.sym=True checkpoint_dir=/directory/of/the/models/
 ```
 on ETH (model [here](https://cloud.mines-paristech.fr/index.php/s/pUmGPtHUG2ASxlJ)),
 ```
-poetry run python scripts/test_registration_scripts/evaluate.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head dataset=eth_base training=sparse_fragment_reg training.cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/
+poetry run python scripts/test_registration_scripts/evaluate.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head data=registration/eth_base training=sparse_fragment_reg cuda=True data.sym=True checkpoint_dir=/directory/of/the/models/
 ```
 on TUM (model [here](https://cloud.mines-paristech.fr/index.php/s/LUVEZvutaDpEkVD)),
 ```
-poetry run python scripts/test_registration_scripts/evaluate.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head dataset=testtum_ss training=sparse_fragment_reg training.cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/
+poetry run python scripts/test_registration_scripts/evaluate.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/testtum_ss training=sparse_fragment_reg cuda=True data.sym=True checkpoint_dir=/directory/of/the/models/
 ```
 You can also visualize matches, you can run:
 ```
-python scripts/test_registration_scripts/see_matches.py task=registration model_type=ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head dataset=eth_base training=sparse_fragment_reg training.cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/ data.first_subsampling=0.04 ind=548 t=22
+python scripts/test_registration_scripts/see_matches.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B4cm_X2_3head data=registration/eth_base training=sparse_fragment_reg cuda=True data.sym=True checkpoint_dir=/directory/of/the/models/ data.first_subsampling=0.04 +ind=548 +t=22
 ```
 
 You should obtain this image
@@ -137,6 +137,7 @@ If you like our work, please cite it :
       journal={arXiv preprint arXiv:2103.14533}
 }
 ```
+And if you use ETH, 3DMatch, TUM or ModelNet as dataset, please cite the respective authors.
 
 ## TODO
  - Add other pretrained models on the model zoo
