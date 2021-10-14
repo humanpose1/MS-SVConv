@@ -1,21 +1,39 @@
-# MS-SVConv : 3D Point Cloud Registration with Multi-Scale Architecture and Self-supervised Fine-tuning
+# 3D Point Cloud Registration with Multi-Scale Architecture and Unsupervised Transfer Learning
 
 Compute features for 3D point cloud registration. The article is available on [Arxiv](https://arxiv.org/abs/2103.14533).
+ <img src="image/overview.png"  height="600">
+
+
 It relies on:
-- A multi scale sparse voxel architecture
-- Self-supervised fine-tuning
+- MS-SVConv : A multi scale sparse voxel architecture
+- UDGE: Unsupervised transfer learning using Data GEneration
 The combination of both allows better generalization capabilities and transfer across different datasets.
 
-The code is available on the [torch-points3d repository](https://github.com/nicolas-chaulet/torch-points3d).
+The code is also available on the [torch-points3d repository](https://github.com/nicolas-chaulet/torch-points3d).
 This repository is to show how to launch the code for training and testing.
 
 ## Demo
 If you want to try MS-SVConv without installing anything on your computer, A Google colab notebook is available [here](https://colab.research.google.com/github/humanpose1/MS-SVConv/blob/main/notebook/demo_MSSVConv.ipynb) (it takes few minutes to install everything). In the colab, we compute features using MS-SVConv and use Ransac (implementation of Open3D) to compute the transformation.
 You can try on 3DMatch on ETH. With this notebook, you can directly use the pretrained model on your project !
+The code have been tried on an NVDIA RTX 1080 Ti with CUDA version 10.1 and Ubuntu 18.04.
 
-## Installation
+## Train and test the model using pytorch lightning
+Here, we will see how we can use MS-SVConv and UDGE to train on ModelNet a deep neural network that compute descriptors for point cloud registration. 
 
-The code have been tried on an NVDIA RTX 1080 Ti with CUDA version 10.1. The OS was Ubuntu 18.04.
+First you should create a environnement using conda.
+```
+conda create -n mssvconv 
+```
+
+First you will need to install [pytorch-geometric](https://github.com/pyg-team/pytorch_geometric) library.
+
+You will also need to install [torch-points3d](https://github.com/nicolas-chaulet/torch-points3d),
+```
+pip install torch-points3d
+```
+
+
+## Train and test the model using the library torch-points3d
 
 ### Installation for training and evaluation
 This installation step is necessary if you want to train and evaluate MS-SVConv.
@@ -33,7 +51,7 @@ Activate the environnement
 ```
 poetry shell
 ```
-If you want to train MS-SVConv on 3DMatch, you will need pycuda (It's optional for testing).
+If you want to train MS-SVConv on 3DMatch, you will need pycuda (It's optional for testing and for other dataset).
 ```
 pip install pycuda
 ```
