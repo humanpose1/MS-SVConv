@@ -1,21 +1,24 @@
-# MS-SVConv : 3D Point Cloud Registration with Multi-Scale Architecture and Self-supervised Fine-tuning
+# 3D Point Cloud Registration with Multi-Scale Architecture and Unsupervised Transfer Learning
 
-Compute features for 3D point cloud registration. The article is available on [Arxiv](https://arxiv.org/abs/2103.14533).
+Compute features for 3D point cloud registration. The article is available on [Arxiv](https://arxiv.org/abs/2103.14533). This article has been accepted in [3DV2021](https://3dv2021.surrey.ac.uk/accepted-papers/).
+ <img src="image/overview.png"  height="600">
+
+
 It relies on:
-- A multi scale sparse voxel architecture
-- Self-supervised fine-tuning
+- MS-SVConv : A multi scale sparse voxel architecture
+- UDGE: Unsupervised transfer learning using Data GEneration
 The combination of both allows better generalization capabilities and transfer across different datasets.
 
-The code is available on the [torch-points3d repository](https://github.com/nicolas-chaulet/torch-points3d).
+The code is also available on the [torch-points3d repository](https://github.com/nicolas-chaulet/torch-points3d).
 This repository is to show how to launch the code for training and testing.
 
 ## Demo
 If you want to try MS-SVConv without installing anything on your computer, A Google colab notebook is available [here](https://colab.research.google.com/github/humanpose1/MS-SVConv/blob/main/notebook/demo_MSSVConv.ipynb) (it takes few minutes to install everything). In the colab, we compute features using MS-SVConv and use Ransac (implementation of Open3D) to compute the transformation.
 You can try on 3DMatch on ETH. With this notebook, you can directly use the pretrained model on your project !
+The code have been tried on an NVDIA RTX 1080 Ti with CUDA version 10.1 and Ubuntu 18.04.
 
-## Installation
 
-The code have been tried on an NVDIA RTX 1080 Ti with CUDA version 10.1. The OS was Ubuntu 18.04.
+## Train and test the model using the library torch-points3d
 
 ### Installation for training and evaluation
 This installation step is necessary if you want to train and evaluate MS-SVConv.
@@ -33,7 +36,7 @@ Activate the environnement
 ```
 poetry shell
 ```
-If you want to train MS-SVConv on 3DMatch, you will need pycuda (It's optional for testing).
+If you want to train MS-SVConv on 3DMatch, you will need pycuda (It's optional for testing and for other dataset).
 ```
 pip install pycuda
 ```
@@ -103,7 +106,7 @@ poetry run python train.py task=segmentation models=segmentation/ms_svconv_base 
 
 ## Evaluation
 
-If you want to evaluate the models on 3DMatch,  download the model [here](https://cloud.mines-paristech.fr/index.php/s/hRc6y2YIFtYsGAI) and run:
+If you want to evaluate the models on 3DMatch,  download the model [here](https://cloud.mines-paristech.fr/index.php/s/m93S2jx91GRrduu) and run:
 
 ```
 poetry run python scripts/test_registration_scripts/evaluate.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/fragment3dmatch training=sparse_fragment_reg cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/
@@ -123,6 +126,18 @@ python scripts/test_registration_scripts/see_matches.py task=registration models
 
 You should obtain this image
  <img src="image/match.png"  height="600">
+ 
+## Small Updates
+
+With the current version of torch-points3d, we obtain a FMR of 97.4 insted of 98.4 with $\tau=0.05$ on 3DMatch in a supervised setting. However, with $\tau=0.2$, we obtain a FMR of 91.6 instead of 89.9. In other word, the new version is better in terms of FMR with $\tau=0.2$.
+If you want to get the previous results, you can use the previous version.
+```
+git clone https://github.com/humanpose1/deeppointcloud-benchmarks.git
+git checkout -b "MS_SVCONV_B2cm_X2_3head" d079374da05506762f32bb7b090f35be86a90760
+```
+You will have to install older versions of omegaconf, hydra, torch and torchsparse. 
+the model can be downloaded [here](https://cloud.mines-paristech.fr/index.php/s/kFGIqiY9Ky5OeiB)
+
 
 ## Model Zoo
 You can find all the pretrained model  (More will be added in the future)
@@ -131,10 +146,19 @@ You can find all the pretrained model  (More will be added in the future)
 If you like our work, please cite it :
 ```
 @inproceedings{horache2021mssvconv,
-      title={3D Point Cloud Registration with Multi-Scale Architecture and Self-supervised Fine-tuning},
-      author={Sofiane Horache and Jean-Emmanuel Deschaud and François Goulette},
-      year={2021},
-      journal={arXiv preprint arXiv:2103.14533}
+author = {S. Horache and J. Deschaud and F. Goulette},
+booktitle = {2021 International Conference on 3D Vision (3DV)},
+title = {3D Point Cloud Registration with Multi-Scale Architecture and Unsupervised Transfer Learning},
+year = {2021},
+volume = {},
+issn = {},
+pages = {1351-1361},
+doi = {10.1109/3DV53792.2021.00142},
+url = {https://doi.ieeecomputersociety.org/10.1109/3DV53792.2021.00142},
+publisher = {IEEE Computer Society},
+address = {Los Alamitos, CA, USA},
+month = {dec}
+}
 }
 ```
 And if you use ETH, 3DMatch, TUM or ModelNet as dataset, please cite the respective authors.
