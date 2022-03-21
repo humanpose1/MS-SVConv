@@ -131,7 +131,7 @@ You should obtain this image
  
 ## Small Updates
 
-With the current version of torch-points3d, we obtain a FMR of 97.4 insted of 98.4 with `tau=0.05` on 3DMatch in a supervised setting. However, with `tau=0.2`, we obtain a FMR of 91.6 instead of 89.9. In other word, the new version is better in terms of FMR with `\tau=0.2`.
+With the current version of torch-points3d, we obtain a FMR of 97.4 insted of 98.4 with `tau=0.05` on 3DMatch in a supervised setting. However, with `tau=0.2`, we obtain a FMR of 91.6 instead of 89.9. In other word, the new version is better in terms of FMR with `tau=0.2`.
 If you want to get the previous results, you can use the previous version.
 ```
 git clone https://github.com/humanpose1/deeppointcloud-benchmarks.git
