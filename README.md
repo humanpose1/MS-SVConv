@@ -106,7 +106,7 @@ poetry run python train.py task=segmentation models=segmentation/ms_svconv_base 
 
 ## Evaluation
 
-If you want to evaluate the models on 3DMatch,  download the model [here](https://cloud.mines-paristech.fr/index.php/s/hRc6y2YIFtYsGAI) and run:
+If you want to evaluate the models on 3DMatch,  download the model [here](https://cloud.mines-paristech.fr/index.php/s/m93S2jx91GRrduu) and run:
 
 ```
 poetry run python scripts/test_registration_scripts/evaluate.py task=registration models=registration/ms_svconv_base model_name=MS_SVCONV_B2cm_X2_3head data=registration/fragment3dmatch training=sparse_fragment_reg cuda=True data.sym=True training.checkpoint_dir=/directory/of/the/models/
@@ -129,12 +129,13 @@ You should obtain this image
  
 ## Small Updates
 
-With the current version of torch-points3d, we obtain a FMR of 97.5 insted of 98.4 with $\tau=0.05$ on 3DMatch in a supervised setting. However, with $\tau=0.2$, we obtain a FMR of 92.2 instead of 89.9. In other word, the new version is better in terms of FMR with $\tau=0.2$.
+With the current version of torch-points3d, we obtain a FMR of 97.4 insted of 98.4 with $\tau=0.05$ on 3DMatch in a supervised setting. However, with $\tau=0.2$, we obtain a FMR of 91.6 instead of 89.9. In other word, the new version is better in terms of FMR with $\tau=0.2$.
 If you want to get the previous results, you can use the previous version.
 ```
 git clone https://github.com/humanpose1/deeppointcloud-benchmarks.git
 git checkout -b "MS_SVCONV_B2cm_X2_3head" d079374da05506762f32bb7b090f35be86a90760
 ```
+You will have to install older versions of omegaconf, hydra, torch and torchsparse. 
 the model can be downloaded [here](https://cloud.mines-paristech.fr/index.php/s/kFGIqiY9Ky5OeiB)
 
 
